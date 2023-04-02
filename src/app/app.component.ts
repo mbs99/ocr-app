@@ -18,11 +18,16 @@ export class AppComponent {
 
     event.files.forEach((file) => formData.append('files', file));
 
-    firstValueFrom(this.http.post('/api/thumbnail-upload', formData))
+    firstValueFrom(
+      this.http.post('/upload', formData, { responseType: 'blob' as 'blob' })
+    )
       .then((result: any) => {
         const blob = new Blob([result], { type: 'application/pdf' });
-        const url = window.URL.createObjectURL(blob);
-        window.open(url);
+        let link = document.createElement('a');
+        link.href = window.URL.createObjectURL(blob);
+        link.download = 'samplePDFFile.pdf';
+        link.click();
+        window.URL.revokeObjectURL(link.href);
       })
       .catch((error) => {
         console.log(error);

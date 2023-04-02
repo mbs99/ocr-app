@@ -15,6 +15,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { MatProgressBarModule } from '@angular/material/progress-bar';
 
 @NgModule({
   declarations: [AppComponent, PdfpageComponent, PdfdocComponent],
@@ -31,6 +32,7 @@ import { MatTooltipModule } from '@angular/material/tooltip';
     MatButtonModule,
     MatCardModule,
     MatTooltipModule,
+    MatProgressBarModule,
   ],
   providers: [],
   bootstrap: [AppComponent],

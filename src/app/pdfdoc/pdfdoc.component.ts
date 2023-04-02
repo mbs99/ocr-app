@@ -1,7 +1,9 @@
 import {
   Component,
   ComponentRef,
+  ElementRef,
   EventEmitter,
+  Input,
   OnDestroy,
   OnInit,
   Output,
@@ -9,10 +11,14 @@ import {
   ViewContainerRef,
 } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
-import { Subscription } from 'rxjs';
+import { Observable, Subscription, map } from 'rxjs';
 import { FileEvent } from '../pdfpage/file.event';
 import { PdfpageComponent } from '../pdfpage/pdfpage.component';
 import { PdfEvent } from './pdf.event';
+import { BreakpointObserver } from '@angular/cdk/layout';
+import { StepperOrientation } from '@angular/cdk/stepper';
+import { MatStepper } from '@angular/material/stepper';
+import { MatProgressBar } from '@angular/material/progress-bar';
 
 @Component({
   selector: 'app-pdfdoc',
@@ -34,7 +40,22 @@ export class PdfdocComponent implements OnInit, OnDestroy {
   secondFormGroup = this._formBuilder.group({});
   isLinear = true;
 
-  constructor(private _formBuilder: FormBuilder) {}
+  @ViewChild('progress') progressBar!: MatProgressBar;
+
+  @ViewChild('stepper') stepper!: MatStepper;
+
+  @Input('showProgress') showProgress = false;
+
+  stepperOrientation: Observable<StepperOrientation>;
+
+  constructor(
+    private _formBuilder: FormBuilder,
+    breakpointObserver: BreakpointObserver
+  ) {
+    this.stepperOrientation = breakpointObserver
+      .observe('(min-width: 800px)')
+      .pipe(map(({ matches }) => (matches ? 'horizontal' : 'vertical')));
+  }
 
   ngOnDestroy(): void {
     this.subscriptions.forEach((sub) => sub.unsubscribe());
@@ -76,6 +97,8 @@ export class PdfdocComponent implements OnInit, OnDestroy {
       .map((page) => page.instance!)
       .map((component) => component.file!);
 
+    this.showProgress = true;
+
     this.createPdf.emit({
       title: '',
       tags: [],
@@ -84,4 +107,10 @@ export class PdfdocComponent implements OnInit, OnDestroy {
   }
 
   onFileSelected(event: FileEvent): void {}
+
+  onReset() {
+    this.stepper.reset();
+
+    this.showProgress = false;
+  }
 }
