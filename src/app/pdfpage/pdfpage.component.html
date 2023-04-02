@@ -1,0 +1,32 @@
+<mat-card>
+  <mat-card-header>
+    <input
+      type="file"
+      class="file-input"
+      (change)="onFileSelected($event)"
+      #fileUpload
+    />
+    <mat-icon mat-card-avatar>article</mat-icon>
+  </mat-card-header>
+  <mat-card-content>{{ fileName || "No file uploaded yet." }}</mat-card-content>
+  <mat-card-actions>
+    <button
+      mat-mini-fab
+      color="primary"
+      class="upload-btn"
+      matTooltip="Add file"
+      (click)="fileUpload.click()"
+    >
+      <mat-icon>attach_file</mat-icon>
+    </button>
+    <button
+      mat-mini-fab
+      matTooltip="Delete page"
+      color="secondary"
+      class="delete-btn"
+      (click)="onDelete()"
+    >
+      <mat-icon>delete</mat-icon>
+    </button>
+  </mat-card-actions>
+</mat-card>

@@ -1,0 +1,12 @@
+.file-input {
+  display: none;
+}
+
+mat-card {
+  max-width: 400px;
+  margin-bottom: 25px;
+}
+
+mat-card-content {
+  margin: 25px;
+}
